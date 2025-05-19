@@ -1,0 +1,291 @@
+<div class = "nospace"><div id = "00" class = "square"></div><div id = "01" class = "square"></div><div id = "02" class = "square"></div><div id = "03" class = "square"></div><div id = "04" class = "square"></div><div id = "05" class = "square"></div><div id = "06" class = "square"></div><div id = "07" class = "square"></div><div id = "08" class = "square"></div><div id = "09" class = "square"></div><div onclick = "sel='X'" class = "square" style = "background-color: black"></div><br><div id = "10" class = "square"></div><div id = "11" class = "square"></div><div id = "12" class = "square"></div><div id = "13" class = "square"></div><div id = "14" class = "square"></div><div id = "15" class = "square"></div><div id = "16" class = "square"></div><div id = "17" class = "square"></div><div id = "18" class = "square"></div><div id = "19" class = "square"></div><div onclick = "sel='S'" class = "square" style = "background-color: red"></div><br><div id = "20" class = "square"></div><div id = "21" class = "square"></div><div id = "22" class = "square"></div><div id = "23" class = "square"></div><div id = "24" class = "square"></div><div id = "25" class = "square"></div><div id = "26" class = "square"></div><div id = "27" class = "square"></div><div id = "28" class = "square"></div><div id = "29" class = "square"></div><div onclick = "sel='V'" class = "square" style = "background-color: green"></div><br><div id = "30" class = "square"></div><div id = "31" class = "square"></div><div id = "32" class = "square"></div><div id = "33" class = "square"></div><div id = "34" class = "square"></div><div id = "35" class = "square"></div><div id = "36" class = "square"></div><div id = "37" class = "square"></div><div id = "38" class = "square"></div><div id = "39" class = "square"></div><div onclick = "sel='C'" class = "square" style = "background-color: yellow"></div><br><div id = "40" class = "square"></div><div id = "41" class = "square"></div><div id = "42" class = "square"></div><div id = "43" class = "square"></div><div id = "44" class = "square"></div><div id = "45" class = "square"></div><div id = "46" class = "square"></div><div id = "47" class = "square"></div><div id = "48" class = "square"></div><div id = "49" class = "square"></div><div onclick = "sel='0'" class = "square" style = "background-color: pink"></div><br><div id = "50" class = "square"></div><div id = "51" class = "square"></div><div id = "52" class = "square"></div><div id = "53" class = "square"></div><div id = "54" class = "square"></div><div id = "55" class = "square"></div><div id = "56" class = "square"></div><div id = "57" class = "square"></div><div id = "58" class = "square"></div><div id = "59" class = "square"></div><div onclick = "sel='P'" class = "square" style = "background-color: grey"></div><br><div id = "60" class = "square"></div><div id = "61" class = "square"></div><div id = "62" class = "square"></div><div id = "63" class = "square"></div><div id = "64" class = "square"></div><div id = "65" class = "square"></div><div id = "66" class = "square"></div><div id = "67" class = "square"></div><div id = "68" class = "square"></div><div id = "69" class = "square"></div><br><div id = "70" class = "square"></div><div id = "71" class = "square"></div><div id = "72" class = "square"></div><div id = "73" class = "square"></div><div id = "74" class = "square"></div><div id = "75" class = "square"></div><div id = "76" class = "square"></div><div id = "77" class = "square"></div><div id = "78" class = "square"></div><div id = "79" class = "square"></div><br><div id = "80" class = "square"></div><div id = "81" class = "square"></div><div id = "82" class = "square"></div><div id = "83" class = "square"></div><div id = "84" class = "square"></div><div id = "85" class = "square"></div><div id = "86" class = "square"></div><div id = "87" class = "square"></div><div id = "88" class = "square"></div><div id = "89" class = "square"></div><br><div id = "90" class = "square"></div><div id = "91" class = "square"></div><div id = "92" class = "square"></div><div id = "93" class = "square"></div><div id = "94" class = "square"></div><div id = "95" class = "square"></div><div id = "96" class = "square"></div><div id = "97" class = "square"></div><div id = "98" class = "square"></div><div id = "99" class = "square"></div></div>
+
+<div id = "player" class = "player"></div>
+<br>
+<div id = "timer">0</div>
+<input type = "checkbox" id = "hacks"><br>
+<button onclick="curmin=99999999999999999999999">Reset Timer</button>
+<button onclick="if (confirm('Are you sure you want to import? (will replace the current one)')){k=prompt('Enter array');arr[0]=k.split(',');reset()}">Import</button>
+
+<button onclick="document.getElementById('arr').innerHTML=arr[0]">Export</button>
+<p id = "arr"></p>
+<p id = "debug"></p>
+<script>
+var curmin = 99999999999999999999999;
+var time = 0;
+var sel = "X";
+var px = 0;
+var py = 0;
+var pvy = 0;
+var pvx = 0;
+var a = 9.8;
+var temp1 = 0;
+var temp2 = 0;
+var temp3 = 0;
+var temp4 = 0;
+var temp5 = 0;
+var startx = 0;
+var starty = 0;
+var lvl = 0;
+var arr = [[
+"XXXXXXXXXX",
+"X00000000X",
+"X00000000X",
+"X00000000X",
+"X00000000X",
+"X00000000X",
+"X00000000X",
+"X00000000X",
+"XP0000000X",
+"XXXXXXXXXX"]
+
+];
+//remove the spaces between the <divs> to get rid of gap
+for (var i=0;i<10;i++){
+for (var j=0;j<10;j++){
+if (arr[lvl][i][j] == 'X'){
+document.getElementById(i+""+j).style.backgroundColor = "black";
+}
+if (arr[lvl][i][j] == 'S'){
+document.getElementById(i+""+j).style.backgroundColor = "red";
+}
+if (arr[lvl][i][j] == 'V'){
+document.getElementById(i+""+j).style.backgroundColor = "green";
+}
+if (arr[lvl][i][j] == 'C'){
+document.getElementById(i+""+j).style.backgroundColor = "yellow";
+}
+if (arr[lvl][i][j] == '0'){
+document.getElementById(i+""+j).style.backgroundColor = "white";
+}
+if (arr[lvl][i][j] == 'P'){
+document.getElementById(i+""+j).style.backgroundColor = "grey";
+document.getElementById("player").style.left = (100*j+30)+"px";
+document.getElementById("player").style.top = (100*i+30)+"px";
+px = 100*j+30;
+py = 100*i+30;
+startx = px;
+starty = py;
+}
+
+}
+}
+setInterval(function(){document.getElementById("player").style.left = px+"px";
+document.getElementById("player").style.top = py+"px";
+temp1 = py+(pvy+a/15)/15;
+document.getElementById("debug").innerHTML = px+", "+py+"|"+lvl;
+if (arr[lvl][parseInt(temp1/100)][parseInt(px/100)] != 'X'){
+pvy += a/15;
+py += pvy/15;
+}
+else{
+pvy = 0;
+}
+
+
+
+temp2 = px+pvx/15;
+if (arr[lvl][parseInt(py/100)][parseInt(temp2/100)] != 'X'){
+px += pvx/15;
+}
+
+
+
+if (!document.getElementById("hacks").checked){
+if (arr[lvl][parseInt(py/100)][parseInt(px/100)] == 'S'){
+time = 0;
+for (var i=0;i<10;i++){
+for (var j=0;j<10;j++){
+if (arr[lvl][i][j] == 'C'){
+document.getElementById(i+""+j).style.backgroundColor = "yellow";
+}
+}
+}
+px = startx;
+py = starty;
+pvx = 0;
+pvy = 0;
+}
+}
+
+if (arr[lvl][parseInt(py/100)][parseInt(px/100)] == 'C'){
+document.getElementById(parseInt(py/100)+""+parseInt(px/100)).style.backgroundColor = "white";
+}
+
+if (arr[lvl][parseInt(py/100)][parseInt(px/100)] == 'V'){
+
+temp3 = 0;
+for (var i=0;i<10;i++){
+for (var j=0;j<10;j++){
+if (document.getElementById(i+""+j).style.backgroundColor == 'yellow'){
+temp3++;
+}
+}
+}
+if (temp3 == 0){
+pvx = 0;
+pvy = 0;
+
+
+if (!document.getElementById("hacks").checked){
+curmin = Math.min(curmin,time/10);
+}
+time=0;
+
+//reset
+for (var i=0;i<10;i++){
+for (var j=0;j<10;j++){
+if (arr[lvl][i][j] == 'X'){
+document.getElementById(i+""+j).style.backgroundColor = "black";
+}
+if (arr[lvl][i][j] == 'S'){
+document.getElementById(i+""+j).style.backgroundColor = "red";
+}
+if (arr[lvl][i][j] == 'V'){
+document.getElementById(i+""+j).style.backgroundColor = "green";
+}
+if (arr[lvl][i][j] == 'C'){
+document.getElementById(i+""+j).style.backgroundColor = "yellow";
+}
+if (arr[lvl][i][j] == '0'){
+document.getElementById(i+""+j).style.backgroundColor = "white";
+}
+if (arr[lvl][i][j] == 'P'){
+document.getElementById(i+""+j).style.backgroundColor = "grey";
+document.getElementById("player").style.left = (100*j+30)+"px";
+document.getElementById("player").style.top = (100*i+30)+"px";
+px = 100*j+30;
+py = 100*i+30;
+startx = px;
+starty = py;
+}
+
+}
+}
+}
+//reset
+
+
+
+}
+
+time++;
+document.getElementById("timer").innerHTML = Math.floor(time*1000)/10000+" ("+curmin+" )";
+},7);
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'ArrowLeft'){
+    pvx = -20;
+  }
+  if (event.key === 'ArrowRight'){
+  	pvx = 20;
+  }
+  if (event.key === 'ArrowUp'){
+    pvy = -50;
+  }  
+});
+
+
+document.addEventListener('keyup', function(event) {
+  if (event.key === 'ArrowLeft'){
+    pvx = 0;
+  }
+  if (event.key === 'ArrowRight'){
+  	pvx = 0;
+  }});
+
+document.addEventListener('click', function(event) {
+  temp1 = Math.floor(event.clientX/100);
+  temp2 = Math.floor(event.clientY/100);
+  arr[lvl][temp2] = arr[lvl][temp2].slice(0,temp1)+sel+arr[lvl][temp2].slice(temp1+1);
+  if (sel == 'X'){
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "black";
+  }
+  if (sel == 'S'){
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "red";
+  }
+  if (sel == 'V'){
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "green";
+  }
+  if (sel == 'C'){
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "yellow";
+  }
+  if (sel == '0'){
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "white";
+  }
+  if (sel == 'P'){
+  temp1 = Math.floor(startx/100);
+  temp2 = Math.floor(starty/100);
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "white";
+  arr[lvl][temp2] = arr[lvl][temp2].slice(0,temp1)+"0"+arr[lvl][temp2].slice(temp1+1);
+  temp1 = Math.floor(event.clientX/100);
+  temp2 = Math.floor(event.clientY/100);
+  document.getElementById(temp2+""+temp1).style.backgroundColor = "grey";
+  document.getElementById("player").style.left = (100*j+30)+"px";
+  document.getElementById("player").style.top = (100*temp2+30)+"px";
+  px = 100*temp1+30;
+  py = 100*temp2+30;
+  startx = px;
+  starty = py;
+  }
+});
+
+function reset(){
+
+  //reset
+  time = 0;
+  for (var i=0;i<10;i++){
+  for (var j=0;j<10;j++){
+  if (arr[lvl][i][j] == 'X'){
+  document.getElementById(i+""+j).style.backgroundColor = "black";
+  }
+  if (arr[lvl][i][j] == 'S'){
+  document.getElementById(i+""+j).style.backgroundColor = "red";
+  }
+  if (arr[lvl][i][j] == 'V'){
+  document.getElementById(i+""+j).style.backgroundColor = "green";
+  }
+  if (arr[lvl][i][j] == 'C'){
+  document.getElementById(i+""+j).style.backgroundColor = "yellow";
+  }
+  if (arr[lvl][i][j] == '0'){
+  document.getElementById(i+""+j).style.backgroundColor = "white";
+  }
+  if (arr[lvl][i][j] == 'P'){
+  document.getElementById(i+""+j).style.backgroundColor = "grey";
+  document.getElementById("player").style.left = (100*j+30)+"px";
+  document.getElementById("player").style.top = (100*i+30)+"px";
+  px = 100*j+30;
+  py = 100*i+30;
+  startx = px;
+  starty = py;
+  }
+
+  }
+  }
+  
+}
+
+</script>
+<style>
+.square{
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+}
+.player{
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  background-color: green;
+  position: absolute;
+}
+.nospace{
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+#timer{
+  font-size: 70px;
+}
+</style>
